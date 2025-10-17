@@ -26,6 +26,13 @@
             <span class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-blue-600 shadow-md">
                 {{ $imovel->tipo->nome }}
             </span>
+            
+            <!-- Favorite Button -->
+            <button onclick="toggleFavorito({{ $imovel->id }})" 
+                    class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-all duration-300 group/fav"
+                    title="Adicionar aos favoritos">
+                <i class="fas fa-heart text-gray-400 group-hover/fav:text-red-500 group-hover/fav:scale-110 transition-all duration-300"></i>
+            </button>
         </div>
         
         <div class="absolute bottom-4 right-4">

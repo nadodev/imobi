@@ -140,6 +140,16 @@ class Imovel extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function favoritos()
+    {
+        return $this->hasMany(Favorito::class);
+    }
+
+    public function usuariosFavoritos()
+    {
+        return $this->belongsToMany(User::class, 'favoritos');
+    }
+
     // Scopes
     public function scopeAtivo($query)
     {

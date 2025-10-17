@@ -54,6 +54,11 @@
                     <i class="fas fa-envelope mr-2"></i> Mensagens
                 </a>
                 
+                <a href="{{ route('admin.chat.index') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.chat.*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-comments mr-2"></i> Chat Online
+                </a>
+                
                 <a href="{{ route('admin.tipos.index') }}" 
                    class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.tipos.*') ? 'bg-gray-700' : '' }}">
                     <i class="fas fa-tags mr-2"></i> Tipos
@@ -78,6 +83,15 @@
                    class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.artigos.*') ? 'bg-gray-700' : '' }}">
                     <i class="fas fa-newspaper mr-2"></i> Blog
                 </a>
+                
+        <a href="{{ route('admin.pagina-sobre.index') }}" 
+           class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.pagina-sobre.*') ? 'bg-gray-700' : '' }}">
+            <i class="fas fa-info-circle mr-2"></i> Página Sobre
+        </a>
+        <a href="{{ route('admin.newsletter.index') }}" 
+           class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.newsletter.*') ? 'bg-gray-700' : '' }}">
+            <i class="fas fa-newspaper mr-2"></i> Newsletter
+        </a>
                 
                 <a href="{{ route('admin.categorias.index') }}" 
                    class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.categorias.*') ? 'bg-gray-700' : '' }}">

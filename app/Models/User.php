@@ -64,6 +64,16 @@ class User extends Authenticatable
         return $this->hasMany(Imovel::class, 'corretor_responsavel');
     }
 
+    public function favoritos()
+    {
+        return $this->hasMany(Favorito::class);
+    }
+
+    public function imoveisFavoritos()
+    {
+        return $this->belongsToMany(Imovel::class, 'favoritos');
+    }
+
     // Scopes
     public function scopeAtivo($query)
     {
