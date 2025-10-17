@@ -28,6 +28,13 @@ class Imovel extends Model
         'vagas',
         'endereco',
         'cidade',
+        'status_gestao',
+        'numero_chaves',
+        'localizacao_chaves',
+        'data_revisao_contrato',
+        'data_vencimento_aluguel',
+        'observacoes_gestao',
+        'corretor_responsavel',
         'bairro',
         'cep',
         'latitude',
@@ -103,6 +110,31 @@ class Imovel extends Model
         return $this->hasMany(Mensagem::class);
     }
 
+    public function corretorResponsavel()
+    {
+        return $this->belongsTo(User::class, 'corretor_responsavel');
+    }
+
+    public function leads()
+    {
+        return $this->hasMany(Lead::class);
+    }
+
+    public function tarefas()
+    {
+        return $this->hasMany(Tarefa::class);
+    }
+
+    public function visualizacoes()
+    {
+        return $this->hasMany(Visualizacao::class);
+    }
+
+    public function avaliacoes()
+    {
+        return $this->hasMany(Avaliacao::class);
+    }
+
     public function corretor()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -133,10 +165,84 @@ class Imovel extends Model
         });
     }
 
+    // Scopes para gestão
+    public function scopePorStatusGestao($query, $status)
+    {
+        return $query->where('status_gestao', $status);
+    }
+
+    public function scopePorCorretor($query, $corretorId)
+    {
+        return $query->where('corretor_responsavel', $corretorId);
+    }
+
+    public function scopeComContratoVencendo($query, $dias = 30)
+    {
+        return $query->where('data_vencimento_aluguel', '<=', now()->addDays($dias))
+                    ->where('data_vencimento_aluguel', '>=', now());
+    }
+
+    // Métodos auxiliares para gestão
+    public function getStatusGestaoColorAttribute()
+    {
+        return match($this->status_gestao) {
+            'livre' => 'green',
+            'reservado' => 'yellow',
+            'vendido' => 'blue',
+            'alugado' => 'purple',
+            'indisponivel' => 'red',
+            default => 'gray'
+        };
+    }
+
+    public function getStatusGestaoLabelAttribute()
+    {
+        return match($this->status_gestao) {
+            'livre' => 'Livre',
+            'reservado' => 'Reservado',
+            'vendido' => 'Vendido',
+            'alugado' => 'Alugado',
+            'indisponivel' => 'Indisponível',
+            default => 'Não definido'
+        };
+    }
+
+    public function isContratoVencendo($dias = 30)
+    {
+        return $this->data_vencimento_aluguel && 
+               $this->data_vencimento_aluguel <= now()->addDays($dias) &&
+               $this->data_vencimento_aluguel >= now();
+    }
+
+    public function getTotalVisualizacoesAttribute()
+    {
+        return $this->visualizacoes()->count();
+    }
+
+    public function getVisualizacoesHojeAttribute()
+    {
+        return $this->visualizacoes()->hoje()->count();
+    }
+
+    public function getVisualizacoesEstaSemanaAttribute()
+    {
+        return $this->visualizacoes()->estaSemana()->count();
+    }
+
+    public function getMediaAvaliacoesAttribute()
+    {
+        return $this->avaliacoes()->aprovado()->avg('avaliacao') ?? 0;
+    }
+
+    public function getTotalAvaliacoesAttribute()
+    {
+        return $this->avaliacoes()->aprovado()->count();
+    }
+
     // Accessors
     public function getPrecoFormatadoAttribute()
     {
-        return 'R$ ' . number_format($this->preco, 2, ',', '.');
+        return 'R$ ' . number_format((float) $this->preco, 2, ',', '.');
     }
 
     public function incrementarVisualizacoes()

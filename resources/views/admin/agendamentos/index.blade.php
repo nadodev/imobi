@@ -3,6 +3,18 @@
 @section('page-title', 'Agendamentos')
 
 @section('content')
+<div class="mb-6 flex justify-between items-center">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900">Agendamentos</h1>
+        <p class="text-gray-600">Gerencie todas as visitas agendadas</p>
+    </div>
+    <div class="flex space-x-3">
+        <a href="{{ route('admin.agendamentos.calendario') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-calendar-alt mr-2"></i> Calendário
+        </a>
+    </div>
+</div>
+
 <!-- Filtros -->
 <div class="bg-white p-4 rounded-lg shadow mb-6">
     <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4">

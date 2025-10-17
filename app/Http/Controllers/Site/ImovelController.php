@@ -100,13 +100,12 @@ class ImovelController extends Controller
 
         // Imóveis semelhantes
         $semelhantes = Imovel::with(['tipo', 'finalidade', 'imagemPrincipal'])
-            ->ativo()
+        ->where('status', 'ativo')
             ->where('id', '!=', $imovel->id)
             ->where('tipo_id', $imovel->tipo_id)
             ->where('cidade', $imovel->cidade)
             ->take(4)
             ->get();
-
         return view('site.imoveis.show', compact('imovel', 'semelhantes'));
     }
 }

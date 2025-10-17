@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin - Imobiliária')</title>
-    
+    @vite(['resources/css/app.css','resources/js/app.js'])
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -19,7 +20,7 @@
                 </h2>
             </div>
             
-            <nav class="mt-8">
+            <nav class="mt-8 bg-gray-800">
                 <a href="{{ route('admin.dashboard') }}" 
                    class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-700' : '' }}">
                     <i class="fas fa-chart-line mr-2"></i> Dashboard
@@ -30,10 +31,23 @@
                     <i class="fas fa-building mr-2"></i> Imóveis
                 </a>
                 
-                <a href="{{ route('admin.agendamentos.index') }}" 
-                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.agendamentos.*') ? 'bg-gray-700' : '' }}">
-                    <i class="fas fa-calendar mr-2"></i> Agendamentos
-                </a>
+                <div class="relative">
+                    <a href="{{ route('admin.agendamentos.index') }}" 
+                       class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.agendamentos.*') ? 'bg-gray-700' : '' }}">
+                        <i class="fas fa-calendar mr-2"></i> Agendamentos
+                        <i class="fas fa-chevron-down float-right mt-1 text-xs"></i>
+                    </a>
+                    <div class="ml-4 {{ request()->routeIs('admin.agendamentos.*') ? '' : 'hidden' }}">
+                        <a href="{{ route('admin.agendamentos.index') }}" 
+                           class="block px-4 py-2 text-sm hover:bg-gray-600 {{ request()->routeIs('admin.agendamentos.index') ? 'bg-gray-600' : '' }}">
+                            <i class="fas fa-list mr-2"></i> Lista
+                        </a>
+                        <a href="{{ route('admin.agendamentos.calendario') }}" 
+                           class="block px-4 py-2 text-sm hover:bg-gray-600 {{ request()->routeIs('admin.agendamentos.calendario') ? 'bg-gray-600' : '' }}">
+                            <i class="fas fa-calendar-alt mr-2"></i> Calendário
+                        </a>
+                    </div>
+                </div>
                 
                 <a href="{{ route('admin.mensagens.index') }}" 
                    class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.mensagens.*') ? 'bg-gray-700' : '' }}">
@@ -53,6 +67,75 @@
                 <a href="{{ route('admin.configuracoes.index') }}" 
                    class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.configuracoes.*') ? 'bg-gray-700' : '' }}">
                     <i class="fas fa-cog mr-2"></i> Configurações
+                </a>
+                
+                <a href="{{ route('admin.banners.index') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.banners.*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-image mr-2"></i> Banners
+                </a>
+                
+                <a href="{{ route('admin.artigos.index') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.artigos.*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-newspaper mr-2"></i> Blog
+                </a>
+                
+                <a href="{{ route('admin.categorias.index') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.categorias.*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-folder mr-2"></i> Categorias
+                </a>
+                
+                <a href="{{ route('admin.avaliacoes.index') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.avaliacoes.*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-star mr-2"></i> Avaliações
+                </a>
+
+                <hr class="my-4 border-gray-700">
+                
+                <!-- CRM Section -->
+                <div class="px-4 py-2">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">CRM</h3>
+                </div>
+                
+                <a href="{{ route('admin.crm.dashboard') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.crm.dashboard') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-chart-line mr-2"></i> Dashboard CRM
+                </a>
+                
+                <a href="{{ route('admin.crm.leads') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.crm.leads*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-users mr-2"></i> Leads
+                </a>
+                
+                <a href="{{ route('admin.crm.tarefas') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.crm.tarefas*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-tasks mr-2"></i> Tarefas
+                </a>
+                
+                <a href="{{ route('admin.crm.funil') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.crm.funil') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-funnel-dollar mr-2"></i> Funil de Vendas
+                </a>
+                
+                <a href="{{ route('admin.crm.relatorios') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.crm.relatorios') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-chart-bar mr-2"></i> Relatórios
+                </a>
+
+                <hr class="my-4 border-gray-700">
+                
+                <!-- Gestão de Imóveis Section -->
+                <div class="px-4 py-2">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Gestão</h3>
+                </div>
+                
+                <a href="{{ route('admin.gestao-imoveis.dashboard') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.gestao-imoveis.dashboard') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-chart-pie mr-2"></i> Dashboard Gestão
+                </a>
+                
+                <a href="{{ route('admin.gestao-imoveis.index') }}" 
+                   class="block px-4 py-3 hover:bg-gray-700 {{ request()->routeIs('admin.gestao-imoveis.*') ? 'bg-gray-700' : '' }}">
+                    <i class="fas fa-key mr-2"></i> Gestão de Imóveis
                 </a>
 
                 <hr class="my-4 border-gray-700">

@@ -215,6 +215,20 @@ class ImovelSeeder extends Seeder
         ];
 
         foreach ($imoveis as $imovelData) {
+            // Adicionar campos de gestão baseados no status
+            $imovelData['status_gestao'] = $imovelData['status'] === 'ativo' ? 'livre' : 
+                                          ($imovelData['status'] === 'vendido' ? 'vendido' : 
+                                          ($imovelData['status'] === 'alugado' ? 'alugado' : 'indisponivel'));
+            
+            // Adicionar dados de gestão aleatórios
+            $imovelData['numero_chaves'] = rand(1, 3);
+            $imovelData['localizacao_chaves'] = ['Escritório', 'Corretor', 'Imóvel'][rand(0, 2)];
+            $imovelData['data_revisao_contrato'] = now()->addDays(rand(30, 365))->format('Y-m-d');
+            $imovelData['data_vencimento_aluguel'] = $imovelData['finalidade_id'] == $tipoAluguel ? 
+                now()->addDays(rand(30, 365))->format('Y-m-d') : null;
+            $imovelData['observacoes_gestao'] = 'Imóvel em excelente estado de conservação.';
+            $imovelData['corretor_responsavel'] = rand(2, 3); // IDs dos corretores
+            
             $imovel = Imovel::create($imovelData);
 
             // Criar imagens placeholder (você pode substituir por imagens reais)

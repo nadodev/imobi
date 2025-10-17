@@ -67,7 +67,7 @@ class ImovelController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'status' => 'required|in:ativo,vendido,alugado,oculto',
-            'destaque' => 'boolean',
+            'destaque' => 'nullable|boolean',
             'imagens.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
 
@@ -95,6 +95,7 @@ class ImovelController extends Controller
 
     public function edit(Imovel $imovel)
     {
+      
         $tipos = Tipo::orderBy('nome')->get();
         $finalidades = Finalidade::orderBy('nome')->get();
 
@@ -103,7 +104,8 @@ class ImovelController extends Controller
 
     public function update(Request $request, Imovel $imovel)
     {
-        $validated = $request->validate([
+        try {
+            $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
             'tipo_id' => 'required|exists:tipos,id',
@@ -121,7 +123,7 @@ class ImovelController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'status' => 'required|in:ativo,vendido,alugado,oculto',
-            'destaque' => 'boolean',
+            'destaque' => 'nullable|boolean',
             'imagens.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
 
@@ -144,8 +146,14 @@ class ImovelController extends Controller
             }
         }
 
-        return redirect()->route('admin.imoveis.index')
-            ->with('success', 'Imóvel atualizado com sucesso!');
+            return redirect()->back()
+                ->with('success', 'Imóvel atualizado com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Erro ao atualizar imóvel: ' . $e->getMessage());
+        }
     }
 
     public function destroy(Imovel $imovel)
@@ -161,7 +169,7 @@ class ImovelController extends Controller
             ->with('success', 'Imóvel excluído com sucesso!');
     }
 
-    public function deleteImage($id)
+    public function deleteImage(Imovel $imovel, $id)
     {
         $imagem = ImagemImovel::findOrFail($id);
         Storage::disk('public')->delete($imagem->caminho);

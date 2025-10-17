@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             AgendamentoSeeder::class,
             MensagemSeeder::class,
             ConfiguracaoSeeder::class,
+            BannerSeeder::class,
+            CRMSeeder::class,
+            CategoriaSeeder::class,
+            BlogSeeder::class,
         ]);
     }
 }

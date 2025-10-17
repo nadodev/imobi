@@ -11,6 +11,7 @@ class ConfiguracaoController extends Controller
     public function index()
     {
         $configuracoes = Configuracao::all()->groupBy('grupo');
+
         return view('admin.configuracoes.index', compact('configuracoes'));
     }
 

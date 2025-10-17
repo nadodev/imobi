@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -38,6 +37,31 @@ class User extends Authenticatable
     public function mensagensRespondidas()
     {
         return $this->hasMany(Mensagem::class, 'respondido_por');
+    }
+
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'corretor_id');
+    }
+
+    public function leadsCriados()
+    {
+        return $this->hasMany(Lead::class, 'user_id');
+    }
+
+    public function tarefas()
+    {
+        return $this->hasMany(Tarefa::class);
+    }
+
+    public function tarefasCriadas()
+    {
+        return $this->hasMany(Tarefa::class, 'criado_por');
+    }
+
+    public function imoveisResponsavel()
+    {
+        return $this->hasMany(Imovel::class, 'corretor_responsavel');
     }
 
     // Scopes

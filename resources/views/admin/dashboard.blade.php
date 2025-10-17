@@ -91,7 +91,7 @@
                         <div class="flex items-center justify-between border-b pb-3">
                             <div>
                                 <p class="font-semibold">{{ $agendamento->nome_cliente }}</p>
-                                <p class="text-sm text-gray-600">{{ $agendamento->imovel->codigo }} - {{ $agendamento->data_formatada }}</p>
+                                <p class="text-sm text-gray-600">{{ $agendamento->imovel ? $agendamento->imovel->codigo : 'Imóvel removido' }} - {{ $agendamento->data_formatada }}</p>
                             </div>
                             <span class="px-3 py-1 text-xs rounded-full bg-{{ $agendamento->status_badge }}-100 text-{{ $agendamento->status_badge }}-800">
                                 {{ ucfirst($agendamento->status) }}
