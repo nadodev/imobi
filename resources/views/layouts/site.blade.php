@@ -89,6 +89,69 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Mobile Sidebar Styles */
+        #mobile-sidebar {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        #mobile-sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #mobile-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #mobile-sidebar::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.3);
+            border-radius: 2px;
+        }
+
+        #mobile-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(156, 163, 175, 0.5);
+        }
+
+        /* Smooth transitions for mobile menu button */
+        #mobile-menu-button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #mobile-menu-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sidebar link animations */
+        #mobile-sidebar a {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #mobile-sidebar a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        #mobile-sidebar a:hover::before {
+            left: 100%;
+        }
+
+        /* Overlay animation */
+        #sidebar-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Prevent body scroll when sidebar is open */
+        body.sidebar-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -108,6 +171,7 @@
                     </div>
                 </a>
                 
+                <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors relative group">
                         Início
@@ -134,7 +198,8 @@
                     @endauth
                 </nav>
 
-                <div class="flex items-center space-x-4">
+                <!-- Desktop Auth Section -->
+                <div class="hidden md:flex items-center space-x-4">
                     @guest
                         <a href="{{ route('login') }}" class="px-6 py-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl">
                             Entrar
@@ -151,9 +216,108 @@
                         </div>
                     @endguest
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-all duration-300">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobile-sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+                    <i class="fas fa-home text-white text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        ImobiJoaçaba
+                    </span>
+                    <p class="text-xs text-gray-500 font-medium">Prime Imóveis</p>
+                </div>
+            </div>
+            <button id="close-sidebar" class="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-all duration-300">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="p-6">
+            <ul class="space-y-2">
+                <li>
+                    <a href="{{ route('home') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 group">
+                        <i class="fas fa-home w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium">Início</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('imoveis.index') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 group">
+                        <i class="fas fa-building w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium">Imóveis</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('blog.index') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 group">
+                        <i class="fas fa-newspaper w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium">Blog</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('contato') }}" class="flex items-center px-4 py-3 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 group">
+                        <i class="fas fa-envelope w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium">Contato</span>
+                    </a>
+                </li>
+                
+                @auth
+                    @if(auth()->user()->isAdmin() || auth()->user()->isCorretor())
+                        <li class="pt-4 border-t border-gray-200">
+                            <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 rounded-xl text-blue-600 hover:bg-blue-50 transition-all duration-300 group">
+                                <i class="fas fa-cog w-5 h-5 mr-3 group-hover:scale-110 transition-transform"></i>
+                                <span class="font-medium">Painel Admin</span>
+                            </a>
+                        </li>
+                    @endif
+                @endauth
+            </ul>
+        </nav>
+
+        <!-- Sidebar Auth Section -->
+        <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200 bg-gray-50">
+            @guest
+                <a href="{{ route('login') }}" class="w-full flex items-center justify-center px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Entrar
+                </a>
+            @else
+                <div class="space-y-3">
+                    <div class="flex items-center px-4 py-3 bg-white rounded-xl">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-900">{{ auth()->user()->name }}</p>
+                            <p class="text-sm text-gray-500">Usuário logado</p>
+                        </div>
+                    </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center justify-center px-6 py-3 rounded-xl bg-red-50 text-red-600 font-medium hover:bg-red-100 transition-all duration-300">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            Sair
+                        </button>
+                    </form>
+                </div>
+            @endguest
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
 
     <!-- Alerts -->
     @if(session('success'))
@@ -189,7 +353,7 @@
                 <div>
                     <h3 class="text-lg font-bold mb-4 text-white">Links Rápidos</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition-colors flex items-center"><i class="fas fa-chevron-right text-xs mr-2"></i> Home</a></li>
+                        <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white transition-colors flex items-center"><i class="fas fa-chevron-right text-xs mr-2"></i> Início</a></li>
                         <li><a href="{{ route('imoveis.index') }}" class="text-gray-400 hover:text-white transition-colors flex items-center"><i class="fas fa-chevron-right text-xs mr-2"></i> Imóveis</a></li>
                         <li><a href="{{ route('blog.index') }}" class="text-gray-400 hover:text-white transition-colors flex items-center"><i class="fas fa-chevron-right text-xs mr-2"></i> Blog</a></li>
                         <li><a href="{{ route('contato') }}" class="text-gray-400 hover:text-white transition-colors flex items-center"><i class="fas fa-chevron-right text-xs mr-2"></i> Contato</a></li>
@@ -235,6 +399,53 @@
     </footer>
 
     @yield('scripts')
+
+    <!-- Mobile Sidebar JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileSidebar = document.getElementById('mobile-sidebar');
+            const closeSidebarButton = document.getElementById('close-sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+            // Open sidebar
+            mobileMenuButton.addEventListener('click', function() {
+                mobileSidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+                document.body.classList.add('sidebar-open');
+            });
+
+            // Close sidebar
+            function closeSidebar() {
+                mobileSidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+                document.body.classList.remove('sidebar-open');
+            }
+
+            closeSidebarButton.addEventListener('click', closeSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Close sidebar when clicking on navigation links
+            const sidebarLinks = mobileSidebar.querySelectorAll('a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', closeSidebar);
+            });
+
+            // Close sidebar on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !mobileSidebar.classList.contains('-translate-x-full')) {
+                    closeSidebar();
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) { // md breakpoint
+                    closeSidebar();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 
