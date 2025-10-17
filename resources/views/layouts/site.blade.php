@@ -154,7 +154,7 @@
         }
 
         .container-custom {
-            max-width: 1500px;
+            max-width: 1650px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
