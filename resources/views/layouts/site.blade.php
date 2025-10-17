@@ -102,7 +102,7 @@
                     </div>
                     <div class="">
                         <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            Imobiliária
+                            ImobiJoaçaba
                         </span>
                         <p class="text-xs text-gray-500 font-medium">Prime Imóveis</p>
                     </div>
@@ -110,7 +110,7 @@
                 
                 <nav class="hidden md:flex space-x-8">
                     <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors relative group">
-                        Home
+                        Início
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
                     </a>
                     <a href="{{ route('imoveis.index') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors relative group">
