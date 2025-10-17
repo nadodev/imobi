@@ -161,7 +161,7 @@
     </div>
     
     <!-- Back to Site Link -->
-    <a href="{{ route('home') }}" class="back-link inline-flex items-center px-4 py-2 rounded-full text-gray-700 hover:text-gray-900 font-medium">
+    <a href="{{ route('home') }}" class="back-link inline-flex items-center px-4 py-2 rounded-full text-gray-700 hover:text-gray-900 font-medium z-50">
         <i class="fas fa-arrow-left mr-2"></i>
         Voltar ao Site
     </a>

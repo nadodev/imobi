@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="space-y-6">
+   
     <!-- Header -->
     <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-2">
